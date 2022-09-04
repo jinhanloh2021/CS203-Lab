@@ -16,68 +16,77 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
     private BookService bookService;
 
-    public BookController(BookService bs){
+    public BookController(BookService bs) {
         this.bookService = bs;
     }
 
     /**
      * List all books in the system
+     * 
      * @return list of all books
      */
     @GetMapping("/books")
-    public List<Book> getBooks(){
+    public List<Book> getBooks() {
         return bookService.listBooks();
     }
 
     /**
      * Search for book with the given id
      * If there is no book with the given "id", throw a BookNotFoundException
+     * 
      * @param id
      * @return book with the given id
      */
     @GetMapping("/books/{id}")
-    public Book getBook(@PathVariable Long id){
+    public Book getBook(@PathVariable Long id) {
         Book book = bookService.getBook(id);
 
         // Need to handle "book not found" error using proper HTTP status code
         // In this case it should be HTTP 404
-        if(book == null) throw new BookNotFoundException(id);
+        if (book == null)
+            throw new BookNotFoundException(id);
         return bookService.getBook(id);
 
     }
+
     /**
      * Add a new book with POST request to "/books"
      * Note the use of @RequestBody
+     * 
      * @param book
      * @return list of all books
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/books")
-    public Book addBook(@RequestBody Book book){
+    public Book addBook(@RequestBody Book book) {
         return bookService.addBook(book);
     }
 
     /**
      * If there is no book with the given "id", throw a BookNotFoundException
+     * 
      * @param id
      * @param newBookInfo
      * @return the updated, or newly added book
      */
     @PutMapping("/books/{id}")
-    public Book updateBook(@PathVariable Long id, @RequestBody Book newBookInfo){
+    public Book updateBook(@PathVariable Long id, @RequestBody Book newBookInfo) {
         Book book = bookService.updateBook(id, newBookInfo);
-        if(book == null) throw new BookNotFoundException(id);
-        
+        if (book == null)
+            throw new BookNotFoundException(id);
+
         return book;
     }
 
     /**
      * Remove a book with the DELETE request to "/books/{id}"
      * If there is no book with the given "id", throw a BookNotFoundException
+     * 
      * @param id
      */
     @DeleteMapping("/books/{id}")
-    public void deleteBook(@PathVariable Long id){
-        if(bookService.deleteBook(id) == 0) throw new BookNotFoundException(id);
+    public void deleteBook(@PathVariable Long id) {
+        if (bookService.deleteBook(id) == 0)
+            throw new BookNotFoundException(id);
     }
 }

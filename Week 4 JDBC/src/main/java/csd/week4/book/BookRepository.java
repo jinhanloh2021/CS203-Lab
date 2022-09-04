@@ -8,11 +8,14 @@ import java.util.Optional;
  */
 public interface BookRepository {
     Long save(Book book);
+
     int update(Book book);
+
     int deleteById(Long id);
+
     List<Book> findAll();
 
     // Using Optional - the return value of this method may contain a null value
     Optional<Book> findById(Long id);
- 
+
 }
