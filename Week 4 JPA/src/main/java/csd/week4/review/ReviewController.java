@@ -14,14 +14,14 @@ public class ReviewController {
     /**
      * This controller works with the repositories directly, without a service layer
      */
-    public ReviewController(ReviewRepository reviews, BookRepository books){
+    public ReviewController(ReviewRepository reviews, BookRepository books) {
         this.reviews = reviews;
         this.books = books;
     }
 
     @GetMapping("/books/{bookId}/reviews")
-    public List<Review> getAllReviewsByBookId(@PathVariable (value = "bookId") Long bookId) {
-        if(!books.existsById(bookId)) {
+    public List<Review> getAllReviewsByBookId(@PathVariable(value = "bookId") Long bookId) {
+        if (!books.existsById(bookId)) {
             throw new BookNotFoundException(bookId);
         }
         return reviews.findByBookId(bookId);
@@ -35,11 +35,20 @@ public class ReviewController {
      * Return the newly added review
      */
     @PostMapping("/books/{bookId}/reviews")
-    public Review addReview(@PathVariable (value = "bookId") Long bookId, @RequestBody Review review) {
-        // Hint: using "map" to handle the returned Optional object from "findById(bookId)"
+    public Review addReview(@PathVariable(value = "bookId") Long bookId, @RequestBody Review review) {
+        // Hint: using "map" to handle the returned Optional object from
+        // "findById(bookId)"
         // your code here
         // need to change the "return null"
-        return null;
+        try {
+            return books.findById(bookId).map((book) -> {
+                review.setBook(book);
+                reviews.save(review);
+                return review;
+            }).orElseThrow(() -> new ReviewNotFoundException(bookId));
+        } catch (ReviewNotFoundException e) {
+            return null;
+        }
     }
 
     /**
@@ -54,10 +63,10 @@ public class ReviewController {
      * @return
      */
     @PutMapping("/books/{bookId}/reviews/{reviewId}")
-    public Review updateReview(@PathVariable (value = "bookId") Long bookId,
-                                 @PathVariable (value = "reviewId") Long reviewId,
-                                 @RequestBody Review newReview) {
-        if(!books.existsById(bookId)) {
+    public Review updateReview(@PathVariable(value = "bookId") Long bookId,
+            @PathVariable(value = "reviewId") Long reviewId,
+            @RequestBody Review newReview) {
+        if (!books.existsById(bookId)) {
             throw new BookNotFoundException(bookId);
         }
         return reviews.findById(reviewId).map(review -> {
@@ -70,10 +79,10 @@ public class ReviewController {
      * Use a ResponseEntity to have more control over the response sent to client
      */
     @DeleteMapping("/books/{bookId}/reviews/{reviewId}")
-    public ResponseEntity<?> deleteReview(@PathVariable (value = "bookId") Long bookId,
-                              @PathVariable (value = "reviewId") Long reviewId) {
-        
-        if(!books.existsById(bookId)) {
+    public ResponseEntity<?> deleteReview(@PathVariable(value = "bookId") Long bookId,
+            @PathVariable(value = "reviewId") Long reviewId) {
+
+        if (!books.existsById(bookId)) {
             throw new BookNotFoundException(bookId);
         }
 
