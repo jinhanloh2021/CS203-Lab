@@ -84,8 +84,12 @@ public class JdbcBookRepository implements BookRepository {
         // your code here
         // return jdbcTemplate.query("select * from books",
         // new BeanPropertyRowMapper<Book>(Book.class));
-        return jdbcTemplate.query("select * from books",
-                (rs, rowNum) -> new Book(rs.getLong("id"), rs.getString("title")));
+        try {
+            return jdbcTemplate.query("select * from books",
+                    (rs, rowNum) -> new Book(rs.getLong("id"), rs.getString("title")));
+        } catch (EmptyResultDataAccessException e) {
+            return new ArrayList<Book>();
+        }
     }
 
     /**
