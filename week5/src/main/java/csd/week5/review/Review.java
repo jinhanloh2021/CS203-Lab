@@ -14,13 +14,15 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Review {
-    private  @Id @GeneratedValue (strategy = GenerationType.IDENTITY) Long id;
+    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     /**
      * TODO: Activity 1 - Java Bean Validation
      * Add constraints here to ensure the review is not null,
-     * and should be at least 10 characters long. 
+     * and should be at least 10 characters long.
      */
     // your code here
+    @NotNull(message = "Review should not be null")
+    @Size(min = 10)
     private String review;
 
     @ManyToOne
