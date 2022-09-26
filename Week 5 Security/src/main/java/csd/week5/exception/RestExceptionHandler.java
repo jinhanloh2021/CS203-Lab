@@ -24,7 +24,7 @@ import java.util.Map;
  * that
  * this class is a central place to handle exceptions across your app
  */
-// @ControllerAdvice
+@ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
