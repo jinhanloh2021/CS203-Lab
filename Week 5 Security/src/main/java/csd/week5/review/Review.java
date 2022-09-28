@@ -22,12 +22,11 @@ public class Review {
      */
     // your code here
     @NotNull(message = "Review should not be null")
-    @Size(min = 10)
+    @Size(min = 10, message = "Review must be at leats 10 characters.")
     private String review;
 
-    @ManyToOne
     // the column "book_id" will be in the auto-generated table "review"
-    // nullable = false: add not-null constraint to the database column "book_id"
-    @JoinColumn(name = "book_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false) // foreign key attribute "book_id" cannot be null.
     private Book book;
 }

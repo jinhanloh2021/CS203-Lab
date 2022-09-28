@@ -62,16 +62,6 @@ public class SecurityConfig {
                 .httpBasic()
                 .and() // "and()"" method allows us to continue configuring the parent
                 .authorizeRequests()
-                // .antMatchers(HttpMethod.POST, "/books").hasRole("ADMIN")
-                // .antMatchers(HttpMethod.PUT, "/books/*").hasRole("ADMIN")
-                // .antMatchers(HttpMethod.DELETE, "/books/*").hasRole("ADMIN")
-
-                // .antMatchers(HttpMethod.POST, "/books/*/reviews").hasAnyRole("ADMIN", "USER")
-                // .antMatchers(HttpMethod.PUT, "/books/*/reviews/*").hasRole("ADMIN")
-                // .antMatchers(HttpMethod.DELETE, "/books/*/reviews/*").hasRole("ADMIN")
-
-                // .antMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
-                // .antMatchers(HttpMethod.PUT, "/users").hasRole("ADMIN")
 
                 .antMatchers(HttpMethod.GET, "/books", "/books/**").permitAll() // Anyone can view books and reviews
                 .antMatchers(HttpMethod.POST, "/books").authenticated()
@@ -84,7 +74,10 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/books/*/reviews/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/books/*/reviews/*").authenticated()
 
+                .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
                 .and()
+
                 .authenticationProvider(authenticationProvider()) // specifies the authentication provider for
                                                                   // HttpSecurity
                 .csrf().disable() // CSRF protection is needed only for browser based attacks

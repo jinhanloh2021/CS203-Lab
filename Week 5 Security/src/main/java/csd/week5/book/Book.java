@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import csd.week5.review.Review;
 import lombok.*;
 
-
 @Entity
 @Getter
 @Setter
@@ -24,20 +23,19 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Book {
-    private @Id @GeneratedValue (strategy = GenerationType.IDENTITY) Long id;
-    
+    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 
     @NotNull(message = "Book's title should not be null")
-    // null elements are considered valid, so we need a size constraints too
+    // empty string title are considered valid, so we need a size constraints too
     @Size(min = 5, max = 200, message = "Book's title should be at least 5 characters long")
     private String title;
-    
+
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Review> reviews;
-    
-    public Book(String title){
+
+    public Book(String title) {
         this.title = title;
     }
-    
+
 }
